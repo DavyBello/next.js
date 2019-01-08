@@ -1,5 +1,5 @@
-/* global jasmine, describe, it, expect, beforeAll, afterAll */
-
+/* eslint-env jest */
+/* global jasmine */
 import { join } from 'path'
 import getPort from 'get-port'
 import clone from 'clone'
@@ -36,6 +36,10 @@ describe('Custom Server', () => {
   describe('with dynamic assetPrefix', () => {
     beforeAll(() => startServer())
     afterAll(() => killApp(server))
+
+    it('should handle render with undefined query', async () => {
+      expect(await renderViaHTTP(appPort, '/no-query')).toMatch(/"query":/)
+    })
 
     it('should set the assetPrefix dynamically', async () => {
       const normalUsage = await renderViaHTTP(appPort, '/asset')
